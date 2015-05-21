@@ -14,7 +14,7 @@ Author: Wiktor Gołgowski <wgolgowski@gmail.com>
 License: WTFPL <http://www.wtfpl.net>
 """
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 """Make urllib work under Python 2 and 3.
 See [http://python3porting.com/noconv.html]
@@ -104,7 +104,8 @@ class Library:
             req = Request(self.baseUrl + '?GetXML=true',
                           urlencode(params).encode('ascii'))
             resp = urlopen(req)
-            tree = ET.fromstring(resp.read())
+            myparser = ET.XMLParser(encoding="utf-8")
+            tree = ET.fromstring(resp.read(), parser=myparser)
             auth = tree.find('security/auth').text
             if auth != 'true':
                 if self.debug:
