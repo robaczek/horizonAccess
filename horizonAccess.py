@@ -16,7 +16,16 @@ License: WTFPL <http://www.wtfpl.net>
 
 from __future__ import print_function
 
-import urllib as U
+"""Make urllib work under Python 2 and 3.
+See [http://python3porting.com/noconv.html]
+"""
+try:
+    from urllib.request import urlopen, Request
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib2 import urlopen, Request
+    from urllib import urlencode
+
 import xml.etree.ElementTree as ET
 
 
@@ -41,7 +50,7 @@ class Library:
         Creates new session with provided credentials.
         """
         # Get session ID:
-        resp = U.request.urlopen(self.baseUrl + '?auth=true&GetXML=true')
+        resp = urlopen(self.baseUrl + '?auth=true&GetXML=true')
         tree = ET.fromstring(resp.read())
         sessid = tree.find('session').text
         if self.debug:
@@ -54,10 +63,10 @@ class Library:
             'sec2': self.idnum,
         }
 
-        data = U.parse.urlencode(params)
-        req = U.request.Request(self.baseUrl + '?GetXML=true',
-                                data.encode('ascii'))
-        resp = U.request.urlopen(req)
+        data = urlencode(params)
+        req = Request(self.baseUrl + '?GetXML=true',
+                      data.encode('ascii'))
+        resp = urlopen(req)
         xx = resp.read()
         tree = ET.fromstring(xx)
         auth = tree.find('security/auth').text
@@ -92,9 +101,9 @@ class Library:
                 'menu': 'account',
                 'submenu': 'itemsout'
             }
-            req = U.request.Request(self.baseUrl + '?GetXML=true',
-                                    U.parse.urlencode(params).encode('ascii'))
-            resp = U.request.urlopen(req)
+            req = Request(self.baseUrl + '?GetXML=true',
+                          urlencode(params).encode('ascii'))
+            resp = urlopen(req)
             tree = ET.fromstring(resp.read())
             auth = tree.find('security/auth').text
             if auth != 'true':
