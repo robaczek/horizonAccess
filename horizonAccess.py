@@ -11,7 +11,6 @@ l = horizonAccess.Library('LIBRARY_URL_ENDING_IN.jsp', 'ID', 'PASSWORD')
 l.mybooks()
 
 Author: Wiktor Gołgowski <wgolgowski@gmail.com>
-License: WTFPL <http://www.wtfpl.net>
 """
 
 from __future__ import print_function, unicode_literals
