@@ -13,5 +13,3 @@ Usage example:
 ```
 
 Author: Wiktor Gołgowski (<wgolgowski@gmail.com>)
-
-License: WTFPL (<http://www.wtfpl.net>)
